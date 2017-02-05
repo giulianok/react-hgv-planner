@@ -24,9 +24,14 @@
     "webpack-dev-server": "^1.14.1"
   },
   "scripts": {
-    "start": "npm install && webpack-dev-server --content-base src --inline --hot",
+    "start": "npm install && typings install && npm run serve",
+    "serve": "webpack-dev-server --content-base src --inline --hot --watch-poll",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Giuliano Kranevitter <info@giulianok.com>",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "google-maps": "^3.2.1",
+    "typings": "^2.1.0"
+  }
 }
