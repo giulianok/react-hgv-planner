@@ -1,4 +1,4 @@
-export default function (state=[""], action) {
+export default function (state=[true], action) {
     const newState = Array.from(state);
 
     switch (action.type) {

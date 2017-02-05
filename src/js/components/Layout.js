@@ -6,7 +6,7 @@ import GMap from "./GMap";
 
 @connect((store) => {
     return {
-        destinations: store.destinations
+        places: store.place
     }
 })
 export default class Layout extends React.Component {

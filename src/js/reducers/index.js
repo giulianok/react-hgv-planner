@@ -1,7 +1,9 @@
 import { combineReducers } from "redux";
 
-import destinations from "./destinations.reducer"
+import multipleDestinations from "./multipleDestinations.reducer"
+import place from "./place.reducer";
 
 export default combineReducers({
-    destinations: destinations
+    multipleDestinations: multipleDestinations,
+    place: place
 })

@@ -1,49 +1,63 @@
 import React from "react";
 import { connect } from "react-redux"
 import Field from "./Field";
-import {addDestination, deleteDestination} from "../actions/destinations.action";
+import {addMultipleDestination, deleteMultipleDestination} from "../actions/multipleDestinations.action";
+import {changePlace, deleteDestinationPlace} from "../actions/place.action";
 
 @connect((store) => {
     return {
-        destinations: store.destinations
+        multipleDestinations: store.multipleDestinations
     }
 })
 export default class MultipleDestination extends React.Component {
 
     addDestination() {
-        this.props.dispatch(addDestination());
+        const { multipleDestinations } = this.props;
+
+        this.props.dispatch(addMultipleDestination());
+        this.props.dispatch(changePlace(this.getName(multipleDestinations.length), null));
     }
 
-    deleteDestination(index) {
-        this.props.dispatch(deleteDestination())
+    deleteDestination() {
+        this.props.dispatch(deleteMultipleDestination());
+        this.props.dispatch(deleteDestinationPlace());
     }
 
-    onDestinationChange(index, event) {
-        this.props.destinations[index] = event.target.value;
-    }
-
-    dynamicDestinations(destinations) {
-        return destinations.map((value, i) => {
-            const name = `destination-${i}`;
-            const removeButton = (i == destinations.length-1)
+    dynamicDestinations(multipleDestinations) {
+        return multipleDestinations.map((value, i) => {
+            const name = this.getName(i);
+            const removeButton = (i > 0 && i == multipleDestinations.length-1)
                 ? <button type="button" onClick={this.deleteDestination.bind(this, i)}>Remove</button>
                 : '';
             return (
                 <div key={i}>
-                    <Field index={i} name={name} label="Destination" value={value} onChange={this.onDestinationChange.bind(this)} />
+                    <Field index={i} name={name} label="Destination" value={value} />
                     {removeButton}
                 </div>
             );
         });
     }
 
+    getName(index) {
+        return `destination-${index}`;
+    }
+
+    generateAddButton() {
+        const { multipleDestinations } = this.props;
+        const limit = this.props.limit || 5;
+
+        return (multipleDestinations.length < limit)
+            ? <button type="button" onClick={this.addDestination.bind(this)}>Add Destination</button>
+            : '';
+    }
+
     render() {
-        const { destinations } = this.props;
+        const { multipleDestinations } = this.props;
 
         return (
             <div>
-                {this.dynamicDestinations(destinations)}
-                <button type="button" onClick={this.addDestination.bind(this)}>Add Destination</button>
+                {this.dynamicDestinations(multipleDestinations)}
+                {this.generateAddButton()}
             </div>
         )
     }

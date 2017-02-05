@@ -4,20 +4,15 @@ import GoogleMapsLoader from "google-maps";
 
 export default class GMap extends React.Component {
 
-    constructor() {
-        super();
-        GoogleMapsLoader.KEY = 'AIzaSyCyRzJmtAsAN_sCLMH-b7sJ5umk0zo1LKU';
-        GoogleMapsLoader.LIBRARIES = ['geometry', 'places'];
-    }
-
-    // API KEY: AIzaSyBAFWLD0zvRsV6caGfjMsCoaX3_V-Go-4I
-
     componentDidMount() {
         const mapElement = document.getElementById('map');
 
         const options = {
-            center: {lat: -34.397, lng: 150.644},
-            zoom: 8
+            center: {
+                lat: 55.378051,
+                lng: -3.435973
+            },
+            zoom: 6
         };
 
         GoogleMapsLoader.load((google) => {
@@ -25,10 +20,23 @@ export default class GMap extends React.Component {
         });
     }
 
+    geolocate() {
+
+    }
+
+
+
+    fillInAddress() {
+
+    }
+
     render() {
         return (
             <div>
                 <div id="map"></div>
+                <div id="locationField">
+                    <input id="autocomplete" placeholder="Enter your address" onFocus={this.geolocate.bind(this)} type="text"></input>
+                </div>
             </div>
         )
     }

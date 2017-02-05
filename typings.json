@@ -6,6 +6,7 @@
     "redux-logger": "registry:dt/redux-logger#2.6.0+20170125003538"
   },
   "globalDependencies": {
+    "google.maps": "registry:dt/google.maps#3.25.0+20161208205818",
     "redux": "registry:dt/redux#3.5.2+20160703092728"
   }
 }

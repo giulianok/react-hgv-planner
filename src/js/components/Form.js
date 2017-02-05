@@ -28,7 +28,7 @@ export default class Form extends React.Component {
 
                         <Field name="origin" label="Origin" onChange={this.onOriginChange.bind(this)} />
 
-                        <MultipleDestinations />
+                        <MultipleDestinations limit="4" />
 
                         <button type="button" onClick={this.getInformation.bind(this)}>Plan Journey</button>
                     </fieldset>
