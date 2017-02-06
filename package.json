@@ -26,12 +26,18 @@
   "scripts": {
     "start": "npm install && typings install && npm run serve",
     "serve": "webpack-dev-server --content-base src --inline --hot --watch-poll",
+    "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Giuliano Kranevitter <info@giulianok.com>",
   "license": "ISC",
   "devDependencies": {
+    "css-loader": "^0.26.1",
+    "extract-text-webpack-plugin": "^1.0.1",
     "google-maps": "^3.2.1",
+    "node-sass": "^4.5.0",
+    "sass-loader": "^4.1.1",
+    "style-loader": "^0.13.1",
     "typings": "^2.1.0"
   }
 }

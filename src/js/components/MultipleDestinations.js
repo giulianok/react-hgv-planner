@@ -26,12 +26,17 @@ export default class MultipleDestination extends React.Component {
     dynamicDestinations(multipleDestinations) {
         return multipleDestinations.map((value, i) => {
             const name = this.getName(i);
+            let label = 'Destination';
             const removeButton = (i > 0 && i == multipleDestinations.length-1)
-                ? <button type="button" onClick={this.deleteDestination.bind(this, i)}>Remove</button>
+                ? <button class="button button__small button__danger" type="button" onClick={this.deleteDestination.bind(this, i)}>Delete Destination</button>
                 : '';
+
+            if (i > 0)
+                label += ' ' + (i+1);
+
             return (
                 <div key={i}>
-                    <Field index={i} name={name} label="Destination" value={value} />
+                    <Field index={i} name={name} label={label} value={value} />
                     {removeButton}
                 </div>
             );
@@ -47,7 +52,7 @@ export default class MultipleDestination extends React.Component {
         const limit = this.props.limit || 5;
 
         return (multipleDestinations.length < limit)
-            ? <button type="button" onClick={this.addDestination.bind(this)}>Add Destination</button>
+            ? <button class="button button__small button__primary" type="button" onClick={this.addDestination.bind(this)}>Add Destination</button>
             : '';
     }
 
@@ -57,6 +62,7 @@ export default class MultipleDestination extends React.Component {
         return (
             <div>
                 {this.dynamicDestinations(multipleDestinations)}
+                <div class="space"></div>
                 {this.generateAddButton()}
             </div>
         )

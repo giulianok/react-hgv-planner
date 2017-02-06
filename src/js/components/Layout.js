@@ -54,16 +54,17 @@ export default class Layout extends React.Component {
 
     render() {
         return (
-            <div>
-                <form action="#">
-                    <fieldset>
-                        <legend>Journeys Details</legend>
-
-                        <Field name="origin" label="Origin" />
-
-                        <MultipleDestinations limit="4" />
-
-                        <button type="button" onClick={this.getInformation.bind(this)}>Plan Journey</button>
+            <div class="layout-wrapper">
+                <form class="layout-form" action="#">
+                    <fieldset class="planner">
+                        <legend class="planner-title">Journeys Details</legend>
+                        <div class="planner-body">
+                            <Field name="origin" label="Origin" />
+                            <MultipleDestinations limit="4" />
+                            <div class="planner-body-button">
+                                <button class="button" type="button" onClick={this.getInformation.bind(this)}>Plan Journey</button>
+                            </div>
+                        </div>
                     </fieldset>
                 </form>
                 <GMap ref="map" />

@@ -1,0 +1,14 @@
+%smooth-box-shadow {
+  $bg: transparentize(black, .7);
+  -webkit-box-shadow: 6px 10px 84px 0 $bg;
+  -moz-box-shadow: 6px 10px 84px 0 $bg;
+  box-shadow: 6px 10px 84px 0 $bg;
+}
+
+%font-regular {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+%font-bold {
+  font-family: 'Raleway', sans-serif;
+}

@@ -23,33 +23,33 @@ import GoogleMapsLoader from "google-maps";
 
 export default class GMap extends React.Component {
 
-    componentDidMount() {
+    constructor() {
+        super();
         GoogleMapsLoader.load((google) => {
-            this.renderMap(google);
-            this.setupServices();
+            this.renderMapAndSetupServices(google);
         });
     }
-
-    renderMap(google) {
+    renderMapAndSetupServices(google) {
         const mapElement = this.getMapElement();
         const options = {
             center: {
                 lat: 55.378051,
                 lng: -3.435973
             },
-            zoom: 6
+            zoom: 6,
+            styles: this.getStyles()
         };
 
         this.setState({
-            map: new google.maps.Map(mapElement, options)
+            map: new google.maps.Map(mapElement, options),
+            directionsService: new google.maps.DirectionsService(),
+            directionsDisplay: new google.maps.DirectionsRenderer(),
+            distanceMatrixService: new google.maps.DistanceMatrixService()
         });
     }
 
-    setupServices() {
-        this.setState({
-            directionsService: new google.maps.DirectionsService(),
-            directionsDisplay: new google.maps.DirectionsRenderer()
-        });
+    getStyles() {
+        return [{"featureType":"administrative","elementType":"all","stylers":[{"visibility":"on"},{"lightness":33}]},{"featureType":"landscape","elementType":"all","stylers":[{"color":"#f2e5d4"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#c5dac6"}]},{"featureType":"poi.park","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":20}]},{"featureType":"road","elementType":"all","stylers":[{"lightness":20}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"color":"#c5c6c6"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#e4d7c6"}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#fbfaf7"}]},{"featureType":"water","elementType":"all","stylers":[{"visibility":"on"},{"color":"#acbcc9"}]}]
     }
 
     getMapElement() {
@@ -57,12 +57,12 @@ export default class GMap extends React.Component {
     }
 
     renderRoutes(origin, destinations) {
-        const {map, directionsDisplay} = this.state;
         const request = this.buildRequestObject(origin, destinations);
 
         this.clearRoutes();
         this.setupMap();
         this.displayRoutes(request);
+        this.getETA(origin, destinations);
     }
 
     clearRoutes() {
@@ -76,18 +76,22 @@ export default class GMap extends React.Component {
     }
 
     buildRequestObject(origin, destinations) {
+        destinations = Array.from(destinations);
         return {
             origin: origin,
             destination: this.getDestination(destinations),
             waypoints: this.getWaypoints(destinations),
-            travelMode: 'DRIVING'
+            travelMode: 'DRIVING',
+            drivingOptions: {
+                departureTime: new Date()
+            }
         };
     }
 
     displayRoutes(request) {
         const {directionsDisplay, directionsService} = this.state;
         directionsService.route(request, function(result, status) {
-            console.log('status', status);
+            console.log(result);
             if (status == 'OK') {
                 directionsDisplay.setDirections(result);
             }
@@ -110,10 +114,61 @@ export default class GMap extends React.Component {
         })
     }
 
+    getETA(origin, destinations) {
+        const {distanceMatrixService} = this.state;
+        const request = {
+            origins: [origin],
+            destinations: destinations,
+            travelMode: 'DRIVING'
+        };
+        distanceMatrixService.getDistanceMatrix(request, (response, status) => {
+            this.buildETAview(response);
+        })
+    }
+
+    buildETAview(data) {
+        const {rows} = data;
+
+        console.log(data);
+
+        let html = rows.map((row, i) => {
+            const {elements} = row;
+            const test = elements.map((element, z) => {
+                return <li key={z}>
+                    <div class="map-eta-point">{data.destinationAddresses[z]}</div>
+                    <div class="map-eta-time">{element.duration.text}</div>
+                </li>;
+            });
+
+            return (<li key={i}>
+                <ul>
+                    {test}
+                </ul>
+            </li>);
+        });
+
+        html = <div class="map-eta">
+            <div class="map-eta-title">Origin:</div>
+            <div class="map-eta-point">{data.originAddresses[0]}</div>
+            <div class="space"></div>
+            <div class="map-eta-title">Destination:</div>
+            <ul>
+                {html}
+            </ul>
+        </div>;
+
+        this.setState({
+            eta: html
+        })
+    }
+
     render() {
+        const eta = (this.state && this.state.eta) ? this.state.eta : null;
+
         return (
-            <div>
-                <div id="map"></div>
+            <div class="layout-map">
+                <div id="map" class="map"></div>
+                {eta}
             </div>
         )
     }
