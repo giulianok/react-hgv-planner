@@ -24,6 +24,8 @@ export default class MultipleDestination extends React.Component {
     }
 
     dynamicDestinations(multipleDestinations) {
+        const {onChangePlace} = this.props;
+
         return multipleDestinations.map((value, i) => {
             const name = this.getName(i);
             let label = 'Destination';
@@ -36,7 +38,7 @@ export default class MultipleDestination extends React.Component {
 
             return (
                 <div key={i}>
-                    <Field index={i} name={name} label={label} value={value} />
+                    <Field index={i} name={name} label={label} value={value} onChangePlace={onChangePlace} />
                     {removeButton}
                 </div>
             );
