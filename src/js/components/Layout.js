@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux"
+import { changePlace } from "../actions/place.action";
 import GMap from "./GMap";
 import Field from "./Field";
 import MultipleDestinations from "./MultipleDestinations";
-
 
 @connect((store) => {
     return {
@@ -11,11 +11,6 @@ import MultipleDestinations from "./MultipleDestinations";
     }
 })
 export default class Layout extends React.Component {
-
-    // API KEY: AIzaSyBAFWLD0zvRsV6caGfjMsCoaX3_V-Go-4I
-
-    componentDidMount() {
-    }
 
     getInformation() {
         console.log('getting info...');
@@ -52,6 +47,8 @@ export default class Layout extends React.Component {
 
     convertPlaceToLatLng(place) { return new google.maps.LatLng(place.geometry.location.lat(), place.geometry.location.lng()); }
 
+    onChangePlace(name, place) { this.props.dispatch(changePlace(name, place)); }
+
     render() {
         return (
             <div class="layout-wrapper">
@@ -59,8 +56,8 @@ export default class Layout extends React.Component {
                     <fieldset class="planner">
                         <legend class="planner-title">Journeys Details</legend>
                         <div class="planner-body">
-                            <Field name="origin" label="Origin" />
-                            <MultipleDestinations limit="4" />
+                            <Field name="origin" label="Origin" onChangePlace={this.onChangePlace.bind(this)} />
+                            <MultipleDestinations limit="4" onChangePlace={this.onChangePlace.bind(this)} />
                             <div class="planner-body-button">
                                 <button class="button" type="button" onClick={this.getInformation.bind(this)}>Plan Journey</button>
                             </div>

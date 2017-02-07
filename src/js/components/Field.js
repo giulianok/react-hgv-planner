@@ -1,13 +1,7 @@
 import React from "react";
 import GoogleMapsLoader from "google-maps";
-import { changePlace } from "../actions/place.action";
 import { connect } from "react-redux"
 
-@connect((store) => {
-    return {
-        place: store.place
-    }
-})
 export default class Field extends React.Component {
 
     componentDidMount() {
@@ -35,16 +29,16 @@ export default class Field extends React.Component {
     }
 
     fillInAddress(autocomplete) {
-        const { name } = this.props;
-        this.props.dispatch(changePlace(name, autocomplete.getPlace()));
+        const { name, onChangePlace } = this.props;
+        onChangePlace(name, autocomplete.getPlace());
     }
 
     render() {
         const { name, label } = this.props;
 
         return (
-            <div class="field">
-                <label for={name}>{label}</label>
+            <div className="field">
+                <label htmlFor={name}>{label}</label>
                 <input id={name} name={name} type="text" placeholder={label} />
             </div>
         )
