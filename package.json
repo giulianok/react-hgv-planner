@@ -12,7 +12,7 @@
     "start": "npm install && typings install && npm run serve",
     "serve": "webpack-dev-server --content-base src --inline --hot --watch-poll",
     "build": "webpack",
-    "test": "karma start"
+    "test": "npm install && karma start"
   },
   "author": "Giuliano Kranevitter <info@giulianok.com>",
   "license": "ISC",
