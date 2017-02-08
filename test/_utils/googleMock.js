@@ -1,11 +1,16 @@
 class Autocomplete {
 
     constructor(element, configuration) {
+        this.events = [];
     }
 
     addListener (event, cb) {
-        cb();
+        this.events.push({
+            name: event,
+            fn: cb
+        });
     }
+
     getPlace () {
         return {};
     }

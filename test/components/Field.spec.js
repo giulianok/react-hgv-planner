@@ -85,25 +85,28 @@ describe(`{Component} Field`, () => {
 
     describe(`{Method} placeChangedListener`, () => {
         it(`should create a listener 'place_changed' using the method 'addListener' of Autocomplete`, () => {
-            spyOn(googleMock.maps.places.Autocomplete.prototype, 'addListener');
-
-            const wrapper = mount(<Field />);
-
-            wrapper.instance().placeChangedListener(new googleMock.maps.places.Autocomplete());
-
-            expect(googleMock.maps.places.Autocomplete.prototype.addListener).toHaveBeenCalledTimes(1);
-        });
-
-        it(`should call the method 'fillInAddress' after fire the event 'place_changed'`, () => {
-            const wrapper = mount(<Field />);
             const autocomplete = new googleMock.maps.places.Autocomplete();
-            const placeChangedListener = wrapper.instance().placeChangedListener;
+            const wrapper = mount(<Field />);
+            const handlerMock = function () {};
 
             spyOn(autocomplete, 'addListener');
 
-            placeChangedListener(autocomplete);
+            wrapper.instance().placeChangedListener(autocomplete, handlerMock);
 
-            expect(autocomplete.addListener).toHaveBeenCalledTimes(1)
+            expect(autocomplete.addListener).toHaveBeenCalledWith('place_changed', handlerMock);
+        });
+    });
+
+    describe(`{Method} placeChangedHandler`, () => {
+        it(`should call the method 'fillInAddress' with Autocomplete`, () => {
+            const autocomplete = new googleMock.maps.places.Autocomplete();
+            const wrapper = mount(<Field />);
+
+            spyOn(Field.prototype, 'fillInAddress');
+
+            wrapper.instance().placeChangedHandler(autocomplete);
+
+            expect(Field.prototype.fillInAddress).toHaveBeenCalledWith(autocomplete);
         });
     });
 

@@ -12,7 +12,7 @@ export default class Field extends React.Component {
         const { name } = this.props;
         const element = document.getElementById(name);
         const autocomplete = this.getAutocomplete(google, element);
-        this.placeChangedListener(autocomplete);
+        this.placeChangedListener(autocomplete, this.placeChangedHandler.bind(this, autocomplete));
     }
 
     getAutocomplete(google, element) {
@@ -27,10 +27,12 @@ export default class Field extends React.Component {
         )
     }
 
-    placeChangedListener(autocomplete) {
-        autocomplete.addListener('place_changed', () => {
-            this.fillInAddress(autocomplete);
-        });
+    placeChangedListener(autocomplete, handler) {
+        autocomplete.addListener('place_changed', handler);
+    }
+
+    placeChangedHandler(autocomplete) {
+        this.fillInAddress(autocomplete);
     }
 
     fillInAddress(autocomplete) {
