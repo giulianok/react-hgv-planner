@@ -3,15 +3,34 @@ var path = require('path');
 module.exports = function(config) {
     config.set({
         basePath: '',
-        frameworks: ['jasmine'],
         files: [
             'test/**/*.spec.js'
         ],
 
         preprocessors: {
-            // add webpack as preprocessor
-            'src/js/**/*.js': ['webpack', 'sourcemap'],
-            'test/**/*.js': ['webpack', 'sourcemap']
+            'test/**/*.js': ['webpack']
+        },
+
+        frameworks: ['jasmine'],
+
+        plugins: [
+            'karma-webpack',
+            'karma-jasmine',
+            'karma-sourcemap-loader',
+            'karma-chrome-launcher',
+            'karma-phantomjs-launcher',
+            'karma-coverage-istanbul-reporter'
+        ],
+
+        reporters: [
+            'progress',
+            'coverage-istanbul'
+        ],
+
+        coverageIstanbulReporter: {
+            reports: ['html'], // reports can be any that are listed here: https://github.com/istanbuljs/istanbul-reports/tree/master/lib
+            dir: './coverage', // output directory
+            fixWebpackSourcePaths: true // if using webpack and pre-loaders, work around webpack breaking the source path
         },
 
         webpack: { //kind of a copy of your webpack config
@@ -30,6 +49,11 @@ module.exports = function(config) {
                         test: /\.json$/,
                         loader: 'json',
                     },
+                ],
+                postLoaders: [ { //delays coverage til after tests are run, fixing transpiled source coverage error
+                    test: /\.js$/,
+                    exclude: /(test|node_modules|bower_components)\//,
+                    loader: 'istanbul-instrumenter' }
                 ]
             },
             externals: {
@@ -43,21 +67,12 @@ module.exports = function(config) {
             noInfo: true //please don't spam the console when running in karma!
         },
 
-        plugins: [
-            'karma-webpack',
-            'karma-jasmine',
-            'karma-sourcemap-loader',
-            'karma-chrome-launcher',
-            'karma-phantomjs-launcher'
-        ],
-
-
         babelPreprocessor: {
             options: {
                 presets: ['airbnb']
             }
         },
-        reporters: ['progress'],
+
         port: 9876,
         colors: true,
         logLevel: config.LOG_INFO,

@@ -5,3 +5,4 @@ node_modules
 typings
 src/app.min.js
 npm-debug*
+coverage

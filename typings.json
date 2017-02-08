@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "enzyme": "registry:dt/enzyme#2.7.0+20170206124124",
     "google-maps": "registry:dt/google-maps#3.2.1+20161129151841",
     "react": "registry:dt/react#15.0.0+20170131093605",
     "react-dom": "registry:dt/react-dom#0.14.0+20170127232351",
@@ -7,6 +8,8 @@
   },
   "globalDependencies": {
     "google.maps": "registry:dt/google.maps#3.25.0+20161208205818",
-    "redux": "registry:dt/redux#3.5.2+20160703092728"
+    "jasmine": "registry:dt/jasmine#2.5.0+20170117213604",
+    "redux": "registry:dt/redux#3.5.2+20160703092728",
+    "sinon": "registry:dt/sinon#1.16.1+20161208163514"
   }
 }

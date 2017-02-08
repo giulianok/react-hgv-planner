@@ -5,15 +5,18 @@ import { connect } from "react-redux"
 export default class Field extends React.Component {
 
     componentDidMount() {
-        GoogleMapsLoader.load(google => this.initAutocomplete(google));
+        GoogleMapsLoader.load(this.initAutocomplete.bind(this));
     }
 
     initAutocomplete(google) {
         const { name } = this.props;
         const element = document.getElementById(name);
-        let autocomplete;
+        const autocomplete = this.getAutocomplete(google, element);
+        this.placeChangedListener(autocomplete);
+    }
 
-        autocomplete = new google.maps.places.Autocomplete(
+    getAutocomplete(google, element) {
+        return new google.maps.places.Autocomplete(
             element,
             {
                 types: ['geocode'],
@@ -21,8 +24,10 @@ export default class Field extends React.Component {
                     country: "UK"
                 }
             }
-        );
+        )
+    }
 
+    placeChangedListener(autocomplete) {
         autocomplete.addListener('place_changed', () => {
             this.fillInAddress(autocomplete);
         });
