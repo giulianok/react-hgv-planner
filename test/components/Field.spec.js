@@ -109,17 +109,23 @@ describe(`{Component} Field`, () => {
 
     describe(`{Method} fillInAddress`, () => {
         it(`should call the function 'onChangePlace' passed in Props`, () => {
-            // const autocomplete = new googleMock.maps.places.Autocomplete();
-            // const mockFn = function () {
-            //     console.log('dada')
-            // };
-            // const wrapper = mount(<Field onChangePlace={mockFn} />);
-            // spyOn(wrapper.props(), 'onChangePlace');
-            //
-            // wrapper.instance().fillInAddress(autocomplete);
+            window.mockFn = function () {
+                console.log('dada')
+            };
+            spyOn(window, 'mockFn');
 
-            // expect(wrapper.props().onChangePlace).toHaveBeenCalled();
-            expect(1).toBe(1);
+            const name = 'testing-name';
+            const autocomplete = new googleMock.maps.places.Autocomplete();
+            const wrapper = mount(<Field name={name} onChangePlace={mockFn} />);
+
+            wrapper.setProps({
+                onChangePlace: window.mockFn
+            });
+
+            wrapper.instance().fillInAddress(autocomplete);
+
+            expect(mockFn).toHaveBeenCalledTimes(1);
+            expect(mockFn).toHaveBeenCalledWith(name, autocomplete.getPlace());
         });
     });
 
