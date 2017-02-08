@@ -1,6 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { shallow, mount, render } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import GoogleMapsLoader from "google-maps";
 import Field from "./../../src/js/components/Field";
 import googleMock from "../_utils/googleMock";

@@ -23,6 +23,8 @@ It's not completely done because I'm having some trouble trying to test React wi
 $ npm test
 ```
 
+**Code coverage is generated after run 'npm test' and it's located in /coverage/index.html**
+
 ## How to use it
 The app depends on Google Maps API. I'm using my own API Key, but in case that it fails, it can be changed in
 > /src/js/config.js
